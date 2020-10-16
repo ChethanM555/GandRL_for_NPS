@@ -697,13 +697,13 @@ class IOsEncoder(nn.Module):
         ## Do one layer of convolution before stacking
 
         # Deduce the size of the embedding for each grid
-        initial_dim = conv_stack[0] / 2  # Because we are going to get dim from I and dim from O
+        initial_dim = int(conv_stack[0] / 2)  # Because we are going to get dim from I and dim from O
 
         # TODO: we know that our grids are mostly sparse, and only positive.
         # That means that a different initialisation might be more appropriate.
         self.in_grid_enc = MapModule(nn.Sequential(
             nn.Conv2d(IMG_SIZE[0], initial_dim,
-                      kernel_size=kernel_size, padding=(kernel_size -1)/2),
+                      kernel_size=kernel_size, padding=int((kernel_size -1)/2)),
             nn.ReLU(inplace=True)
         ), 3)
         self.out_grid_enc = MapModule(nn.Sequential(
