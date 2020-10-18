@@ -297,10 +297,18 @@ class MultiIOProgramDecoder(nn.Module):
         # We will make it a batch size of beam_size
         batch_state = None  # First one is the learned default state
         batch_grammar_state = None
-        batch_inputs = Variable(tt.LongTensor(batch_size, 1).fill_(tgt_start), volatile=vol)
+        if vol is True:
+            with torch.no_grad():
+                batch_inputs = Variable(tt.LongTensor(batch_size, 1).fill_(tgt_start))
+        else :
+            batch_inputs = Variable(tt.LongTensor(batch_size, 1).fill_(tgt_start))
         batch_list_inputs = [[tgt_start]]*batch_size
         batch_io_embeddings = io_embeddings
-        batch_idx = Variable(torch.arange(0, batch_size, 1).long(), volatile=vol)
+        if vol is True :
+            with torch.no_grad():
+                batch_idx = Variable(torch.arange(0, batch_size, 1).long())
+        else :
+            batch_idx = Variable(torch.arange(0, batch_size, 1).long())
         if use_cuda:
             batch_idx = batch_idx.cuda()
         beams_per_sp = [1 for _ in range(batch_size)]
@@ -356,8 +364,11 @@ class MultiIOProgramDecoder(nn.Module):
                 if self.syntax_checker is not None:
                     for idx in sp_parent_idxs.data:
                         new_batch_checker.append(copy.copy(batch_grammar_state[idx]))
-                sp_next_batch_idxs = Variable(tt.LongTensor(sp_curr_beam_size).fill_(i),
-                                              volatile=vol)
+                if vol is True:
+                    with torch.no_grad():
+                        sp_next_batch_idxs = Variable(tt.LongTensor(sp_curr_beam_size).fill_(i))
+                else:
+                    sp_next_batch_idxs = Variable(tt.LongTensor(sp_curr_beam_size).fill_(i))
                 # Get the idxs of the batches
                 if use_cuda:
                     sp_batch_inputs = sp_batch_inputs.cuda()
