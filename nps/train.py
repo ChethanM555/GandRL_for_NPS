@@ -379,6 +379,7 @@ def train_seq2seq_model(
                                      val_file, 5, 0, use_grammar,
                                      out_path, 100, 50, batch_size,
                                      use_cuda, False)
+            if val_acc is None : val_acc = 0.0 
             logging.info("Epoch : %d ValidationAccuracy : %f." % (epoch_idx, val_acc))
             if val_acc > best_val_acc:
                 logging.info("Epoch : %d ValidationBest : %f." % (epoch_idx, val_acc))
