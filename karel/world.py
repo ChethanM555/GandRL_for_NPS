@@ -292,7 +292,7 @@ class World:
         # Get the position of the markers
         markers = np.zeros((rows, cols))
         for nb_marker_m1, marker_map in enumerate(tensor[6:,1:rows+1, 1:cols+1]):
-            markers += (nb_marker_m1+1) * marker_map
+            markers += (nb_marker_m1+1) * marker_map.numpy()
 
         return cls(rows, cols, heroRow, heroCol, heroDir, blocked, markers)
 
