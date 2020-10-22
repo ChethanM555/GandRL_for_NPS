@@ -618,7 +618,7 @@ class ResBlock(nn.Module):
         super(ResBlock, self).__init__()
         self.feat_size = in_feats
         self.kernel_size = kernel_size
-        self.padding = (kernel_size - 1) / 2
+        self.padding = int((kernel_size - 1) / 2)
 
         self.conv1 = nn.Conv2d(self.feat_size, self.feat_size,
                                kernel_size=self.kernel_size,
@@ -719,7 +719,7 @@ class IOsEncoder(nn.Module):
         ), 3)
         self.out_grid_enc = MapModule(nn.Sequential(
             nn.Conv2d(IMG_SIZE[0], initial_dim,
-                      kernel_size=kernel_size, padding=(kernel_size -1)/2),
+                      kernel_size=kernel_size, padding=int((kernel_size -1)/2)),
             nn.ReLU(inplace=True)
         ), 3)
 
