@@ -95,7 +95,7 @@ def shuffle_dataset(dataset, batch_size, randomize=True):
     bucket_fun = lambda x: len(x[1]) / 5
     pairs.sort(key=bucket_fun, reverse=True)
     grouped_pairs = [pairs[pos: pos + batch_size]
-                     for pos in xrange(0,len(pairs), batch_size)]
+                     for pos in range(0,len(pairs), batch_size)]
     if randomize:
         to_shuffle = grouped_pairs[:-1]
         random.shuffle(to_shuffle)
