@@ -260,9 +260,9 @@ class MultiIOProgramDecoder(nn.Module):
                                                                                 inp_seq))
             torch.cat(out_of_syntax_list, 0, out=out_of_syntax_mask)
             if decoder_logit.is_cuda:
-                syntax_err_pos = out_of_syntax_mask.cuda()
+                syntax_err_pos = out_of_syntax_mask.bool().cuda()
             else:
-                syntax_err_pos = out_of_syntax_mask
+                syntax_err_pos = out_of_syntax_mask.bool()
 
             syntax_mask = decoder_logit.data.new(decoder_logit.size()).fill_(0)
             syntax_mask.masked_fill_(syntax_err_pos, -float('inf'))
@@ -662,7 +662,7 @@ class GridEncoder(nn.Module):
                 block = nn.Sequential(
                     ResBlock(kernel_size, conv_stack[i-1]),
                     nn.Conv2d(conv_stack[i-1], conv_stack[i],
-                              kernel_size=kernel_size, padding=(kernel_size-1)/2 ),
+                              kernel_size=kernel_size, padding=int((kernel_size-1)/2 )),
                     nn.ReLU(inplace=True)
                 )
             else:
