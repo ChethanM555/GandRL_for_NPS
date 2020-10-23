@@ -284,7 +284,7 @@ class World:
         blocked = tensor[4, 1:rows+1, 1:cols+1].numpy()
 
         # Get the position of the hero
-        hero_pos_val = torch.nonzero(tensor[:4]).squeeze()
+        hero_pos_val = torch.nonzero(tensor[:4], as_tuple = False).squeeze()
         heroDir = cls.undoHeroDirValue(hero_pos_val[0]+1)
         heroRow = hero_pos_val[1] - 1
         heroCol = hero_pos_val[2] - 1
